@@ -1,0 +1,12 @@
+@import '../src/assets/fonts/inter.css';
+
+:root {
+  font-family: "Inter", sans-serif;
+}
+
+@supports (font-variation-settings: normal) {
+  :root {
+    font-family: "InterVariable", sans-serif;
+    font-optical-sizing: auto;
+  }
+}
