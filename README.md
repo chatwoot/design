@@ -9,6 +9,8 @@ Design guidelines for products at Chatwoot. This repository contains the design 
 
 Visit the documentation website [here](https://design.chatwoot.com).
 
+Note: This is a work in progress, may not be production ready.
+
 ### Running locally
 
 Install all the dependancies
