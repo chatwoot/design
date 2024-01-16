@@ -1,8 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue';
 import SnackbarContainer from './SnackbarContainer.vue';
 import { createToast } from './utils';
-let alertMessageTimer;
+
+let alertMessageTimer: number;
 
 onMounted(() => {
   alertMessageTimer = setInterval(() => {

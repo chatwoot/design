@@ -1,8 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import emitter from '@/helpers/eventBus';
 import SnackbarItem from './SnackbarItem.vue';
 import { onMounted, onUnmounted, reactive } from 'vue';
-import { TOAST_MESSAGE_CREATED } from './utils';
+import { TOAST_MESSAGE_CREATED, type ToastMessage } from './utils';
 
 const props = defineProps({
   duration: {
@@ -11,16 +11,16 @@ const props = defineProps({
   },
 });
 
-const state = reactive({ messages: [] });
+const toastMessages: ToastMessage[] = reactive([]);
 
-const onToastMessageCreated = ({ message, action }) => {
-  state.messages.push({
+const onToastMessageCreated = (event: any): void => {
+  toastMessages.push({
     key: new Date().getTime(),
-    message,
-    action,
+    message: event.message,
+    action: event.action,
   });
   window.setTimeout(() => {
-    state.messages.splice(0, 1);
+    toastMessages.splice(0, 1);
   }, props.duration);
 };
 
@@ -56,10 +56,10 @@ onUnmounted(() => {
     class="rtl:left-4 ltr:right-4 bottom-4 mx-auto inline-flex flex-col overflow-hidden absolute text-center space-y-4 z-50"
   >
     <snackbar-item
-      v-for="message in state.messages"
-      :key="message.key"
-      :message="message.message"
-      :action="message.action"
+      v-for="toast in toastMessages"
+      :key="toast.key"
+      :message="toast.message"
+      :action="toast.action"
     />
   </transition-group>
 </template>

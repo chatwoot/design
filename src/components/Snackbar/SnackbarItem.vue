@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 defineProps({
   message: { type: String, default: '' },
   action: {
@@ -22,7 +22,8 @@ defineProps({
         v-if="action.type == 'link'"
         :to="action.to"
       >
-      {{ action.message }}
-    </router-link>
+        {{ action.message }}
+      </router-link>
+    </div>
   </div>
-</div></template>
+</template>
