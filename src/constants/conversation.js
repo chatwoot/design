@@ -4,3 +4,10 @@ export const CONVERSATION_STATUS = {
   PENDING: 'pending',
   SNOOZED: 'snoozed',
 };
+
+export const CONVERSATION_PRIORITY = {
+  URGENT: 'urgent',
+  HIGH: 'high',
+  LOW: 'low',
+  MEDIUM: 'medium',
+};
