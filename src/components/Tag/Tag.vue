@@ -16,7 +16,6 @@ const hasContent = slots.default;
 const hasSymbol = props.icon || props.color;
 const hasAction = props.removable || props.expandable;
 
-// Check if the 'color' prop is provided
 if (props.size === 's') {
   containerClasses += '  text-xs h-5 min-w-[20px] py-0.5 rounded ';
 
@@ -57,10 +56,22 @@ const emits = defineEmits(['action', 'click']);
 const disabledClasses = ref(props.disabled ? 'opacity-50' : '');
 const disabledActionClasses = ref(props.disabled ? 'cursor-default' : 'hover:bg-slate-400');
 const clickableClasses = ref(props.clickable ? 'cursor-pointer hover:bg-slate-300 outline-slate-300' : '');
-// const tagSizeClasses = ref(allSizeClasses[props.size]);
 const styleClasses = ref(allStyleClasses[props.style]);
 
-// const variantClasses = ref(props.emoji || props.icon || props.color ? '' : 'pl-2');
+const onClick = (event) => {
+  event.stopPropagation();
+  if (props.clickable && !props.disabled) {
+    emits('click');
+  }
+};
+
+const onAction = (event) => {
+  event.stopPropagation();
+  if (!props.disabled) {
+    emits('action');
+  }
+};
+
 const actionIcon = ref(props.removable ? 'i-fluent-dismiss-12-regular' : 'i-fluent-chevron-down-12-regular');
 </script>
 
@@ -68,7 +79,7 @@ const actionIcon = ref(props.removable ? 'i-fluent-dismiss-12-regular' : 'i-flue
   <div
     class="inline-flex items-center justify-center gap-0.5 text-slate-1100 outline outline-1 outline-solid outline-offset-[-1px]"
     :class="[containerClasses, styleClasses, clickableClasses, disabledClasses]"
-    @click="props.clickable && !props.disabled && $emit('action')"
+    @click="onClick"
   >
     <span
       v-if="props.color"
@@ -81,7 +92,7 @@ const actionIcon = ref(props.removable ? 'i-fluent-dismiss-12-regular' : 'i-flue
       v-if="props.removable || props.expandable"
       class="w-[14px] h-[14px] inline-flex justify-center items-center rounded"
       :class="[disabledActionClasses]"
-      @click="!props.disabled && $emit('action')"
+      @click="onAction"
     >
       <span class="text-xs" :class="actionIcon"></span>
     </button>

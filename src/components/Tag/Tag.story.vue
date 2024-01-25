@@ -1,4 +1,5 @@
 <script setup>
+import { logEvent } from 'histoire/client';
 import Tag from './Tag.vue';
 </script>
 
@@ -26,7 +27,7 @@ import Tag from './Tag.vue';
       <Tag expandable disabled>paid customer</Tag>
     </Variant>
     <Variant title="Medium sized SYMBOL-TEXT-ACTION tag">
-      <Tag expandable icon="i-fluent-clock-16-regular" clickable>clickable</Tag>
+      <Tag expandable icon="i-fluent-clock-16-regular" clickable @click="logEvent('Click', $event)" @action="logEvent('expanded', $event)">clickable</Tag>
     </Variant>
 
     <Variant title="Small sized TEXT only tag">
@@ -42,10 +43,10 @@ import Tag from './Tag.vue';
       <Tag size="s" icon="i-fluent-clock-16-regular"></Tag>
     </Variant>
     <Variant title="Small sized ACTION tag">
-      <Tag size="s" removable></Tag>
+      <Tag size="s" removable @action="logEvent('removed', $event)"></Tag>
     </Variant>
     <Variant title="Small sized ACTION tag">
-      <Tag size="s" expandable></Tag>
+      <Tag size="s" expandable @action="logEvent('expanded', $event)"></Tag>
     </Variant>
     <Variant title="Small sized TEXT-ACTION tag">
       <Tag size="s" expandable>paid customer</Tag>
