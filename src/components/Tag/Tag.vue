@@ -53,10 +53,10 @@ const allStyleClasses = {
   outlined: 'outline-slate-500',
 };
 const emits = defineEmits(['action', 'click']);
-const disabledClasses = ref(props.disabled ? 'opacity-50' : '');
-const disabledActionClasses = ref(props.disabled ? 'cursor-default' : 'hover:bg-slate-400');
-const clickableClasses = ref(props.clickable ? 'cursor-pointer hover:bg-slate-300 outline-slate-300' : '');
-const styleClasses = ref(allStyleClasses[props.style]);
+const disabledClasses = props.disabled ? 'opacity-50' : '';
+const disabledActionClasses = props.disabled ? 'cursor-default' : 'hover:bg-slate-400';
+const clickableClasses = props.clickable ? 'cursor-pointer hover:bg-slate-300 outline-slate-300' : '';
+const styleClasses = allStyleClasses[props.style];
 
 const onClick = (event) => {
   event.stopPropagation();
@@ -72,7 +72,7 @@ const onAction = (event) => {
   }
 };
 
-const actionIcon = ref(props.removable ? 'i-fluent-dismiss-12-regular' : 'i-fluent-chevron-down-12-regular');
+const actionIcon = props.removable ? 'i-fluent-dismiss-12-regular' : 'i-fluent-chevron-down-12-regular';
 </script>
 
 <template>
