@@ -20,7 +20,6 @@ const isTextOnly = computed(() => !hasSymbol.value && !hasAction.value && hasCon
 const isSymbolText = computed(() => hasSymbol.value && hasContent.value && !hasAction.value);
 const isActionOnly = computed(() => !hasSymbol.value && !hasContent.value && hasAction.value);
 const isTextAction = computed(() => !hasSymbol.value && hasContent.value && hasAction.value);
-const isSymbolTextAction = computed(() => hasSymbol.value && hasContent.value && hasAction.value);
 
 const containerClasses = computed(() => {
   let classes = [
@@ -117,8 +116,12 @@ const onAction = (event: MouseEvent) => {
 </script>
 
 <template>
-  <div :class="containerClasses" >
-    <button v-if="!isActionOnly" class="inline-flex items-center justify-center gap-0.5 text-slate-1100 cursor-default"  @click="onClick">
+  <div :class="containerClasses">
+    <button
+      v-if="!isActionOnly"
+      class="inline-flex items-center justify-center gap-0.5 text-slate-1100 cursor-default"
+      @click="onClick"
+    >
       <span
         v-if="props.color"
         :class="symbolClasses"
