@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { ref, defineProps, defineEmits, useSlots } from 'vue';
-import { TagProps } from './types';
+import { computed, defineProps, defineEmits, useSlots } from 'vue';
+import type { TagProps } from './types';
 
 const props = withDefaults(defineProps<TagProps>(), {
   size: 'm',
@@ -11,90 +11,125 @@ const props = withDefaults(defineProps<TagProps>(), {
 });
 
 const slots = useSlots();
-let containerClasses = '';
-const hasContent = slots.default;
-const hasSymbol = props.icon || props.color;
-const hasAction = props.removable || props.expandable;
+const hasContent = computed(() => !!slots.default);
+const hasSymbol = computed(() => !!props.icon || !!props.color);
+const hasAction = computed(() => props.removable || props.expandable);
 
-if (props.size === 's') {
-  containerClasses += '  text-xs h-5 min-w-[20px] py-0.5 rounded ';
+// Variants
+const isTextOnly = computed(() => !hasSymbol.value && !hasAction.value && hasContent.value);
+const isSymbolText = computed(() => hasSymbol.value && hasContent.value && !hasAction.value);
+const isActionOnly = computed(() => !hasSymbol.value && !hasContent.value && hasAction.value);
+const isTextAction = computed(() => !hasSymbol.value && hasContent.value && hasAction.value);
+const isSymbolTextAction = computed(() => hasSymbol.value && hasContent.value && hasAction.value);
 
-  // Variant: SYMBOL-TEXT
-  if (hasSymbol && hasContent && !hasAction) {
-    containerClasses += 'pr-1 ';
-  }
-  // Variant: TEXT-ACTION
-  else if (!hasSymbol && hasContent && hasAction) {
-    containerClasses += 'pl-1 ';
+const containerClasses = computed(() => {
+  let classes = [
+    'relative',
+    'inline-flex',
+    'items-center',
+    'justify-center',
+    'gap-0.5',
+    'outline',
+    'outline-1',
+    'outline-solid',
+    'outline-offset-[-1px]',
+  ];
+
+  // Size-specific and content-specific classes
+  if (props.size === 's') {
+    classes.push('text-xs', 'h-5', 'min-w-[20px]', 'p-0.5', 'rounded');
+    if (isSymbolText.value) {
+      classes.push('pr-1');
+    } else if (isTextAction.value) {
+      classes.push('pl-1');
+    } else if (isTextOnly.value) {
+      classes.push('px-1');
+    }
+  } else if (props.size === 'm') {
+    classes.push('text-sm', 'h-6', 'min-w-[24px]', 'leading-4', 'p-1', 'rounded-md');
+    if (isSymbolText.value) {
+      classes.push('pr-2');
+    } else if (isTextAction.value) {
+      classes.push('pl-2');
+    } else if (isTextOnly.value) {
+      classes.push('px-2');
+    }
   }
 
-  // Variant: TEXT
-  if (hasContent) {
-    containerClasses += 'px-1 ';
+  // Style-specific classes
+  if (props.style === 'ghost') {
+    classes.push('outline-transparent');
+  } else if (props.style === 'outlined') {
+    classes.push('outline-slate-500');
   }
-} else if (props.size === 'm') {
-  containerClasses += ' text-sm h-6 min-w-[24px] leading-4 p-1 rounded-md ';
 
-  // Variant: SYMBOL-TEXT
-  if (hasSymbol && hasContent && !hasAction) {
-    containerClasses += 'pr-2 ';
+  // Other dynamic classes
+  if (props.disabled) {
+    classes.push('opacity-50');
   }
-  // Variant: TEXT-ACTION
-  else if (!hasSymbol && hasContent && hasAction) {
-    containerClasses += 'pl-2 ';
+  if (props.clickable && !props.disabled) {
+    classes.push('cursor-pointer', 'hover:bg-slate-300', 'outline-slate-300');
   }
-  // Variant: TEXT
-  else if (!hasSymbol && hasContent && !hasAction) {
-    containerClasses += 'px-2 ';
+
+  return classes.join(' ');
+});
+
+const actionClasses = computed(() => {
+  let classes = ['w-[14px]', 'h-[14px]', 'inline-flex', 'justify-center', 'items-center', 'rounded'];
+  if (!props.disabled) {
+    classes.push('hover:bg-slate-400');
+  } else {
+    classes.push('cursor-default');
   }
-}
-const allStyleClasses = {
-  ghost: 'outline-transparent',
-  outlined: 'outline-slate-500',
-};
+  return classes.join(' ');
+});
+
+const symbolClasses = computed(() => {
+  let classes = ['inline-block'];
+
+  if (props.size === 's') {
+    classes.push('w-[14px]', 'h-[14px]');
+  } else {
+    classes.push('w-4', 'h-4');
+  }
+  return classes.join(' ');
+});
+
+const actionIcon = computed(() =>
+  props.removable ? 'i-fluent-dismiss-12-regular' : 'i-fluent-chevron-down-12-regular'
+);
+
 const emits = defineEmits(['action', 'click']);
-const disabledClasses = props.disabled ? 'opacity-50' : '';
-const disabledActionClasses = props.disabled ? 'cursor-default' : 'hover:bg-slate-400';
-const clickableClasses = props.clickable ? 'cursor-pointer hover:bg-slate-300 outline-slate-300' : '';
-const styleClasses = allStyleClasses[props.style];
 
-const onClick = (event) => {
+const onClick = (event: MouseEvent) => {
   event.stopPropagation();
   if (props.clickable && !props.disabled) {
     emits('click');
   }
 };
 
-const onAction = (event) => {
+const onAction = (event: MouseEvent) => {
   event.stopPropagation();
   if (!props.disabled) {
     emits('action');
   }
 };
-
-const actionIcon = props.removable ? 'i-fluent-dismiss-12-regular' : 'i-fluent-chevron-down-12-regular';
 </script>
 
 <template>
-  <div
-    class="inline-flex items-center justify-center gap-0.5 text-slate-1100 outline outline-1 outline-solid outline-offset-[-1px]"
-    :class="[containerClasses, styleClasses, clickableClasses, disabledClasses]"
-    @click="onClick"
-  >
-    <span
-      v-if="props.color"
-      class="w-4 h-4 inline-block border-[3px] border-white rounded-md"
-      :style="{ background: props.color }"
-    ></span>
-    <span v-else-if="props.icon" class="w-4 h-4 inline-block" :class="props.icon"></span>
-    <slot></slot>
-    <button
-      v-if="props.removable || props.expandable"
-      class="w-[14px] h-[14px] inline-flex justify-center items-center rounded"
-      :class="[disabledActionClasses]"
-      @click="onAction"
-    >
-      <span class="text-xs" :class="actionIcon"></span>
+  <div :class="containerClasses" >
+    <button v-if="!isActionOnly" class="inline-flex items-center justify-center gap-0.5 text-slate-1100 cursor-default"  @click="onClick">
+      <span
+        v-if="props.color"
+        :class="symbolClasses"
+        class="border-[3px] border-white rounded-md"
+        :style="{ background: props.color }"
+      ></span>
+      <span v-else-if="props.icon" class="" :class="[symbolClasses, props.icon]"></span>
+      <slot></slot>
+    </button>
+    <button v-if="hasAction" :class="actionClasses" @click="onAction">
+      <span :class="actionIcon"></span>
     </button>
   </div>
 </template>
