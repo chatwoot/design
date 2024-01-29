@@ -1,1 +1,1 @@
-export type UIColors = 'primary' | 'secondary' | 'warning' | 'danger' | 'success';
+export type UIColors = 'primary' | 'secondary' | 'warning' | 'caution' | 'danger' | 'success';

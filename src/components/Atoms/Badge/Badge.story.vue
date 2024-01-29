@@ -11,7 +11,7 @@ const state = reactive<BadgeProps>({
   disabled: false
 });
 
-const colorOptions: BadgeColors[] = ['primary', 'secondary', 'warning', 'danger', 'success'];
+const colorOptions: BadgeColors[] = ['primary', 'secondary', 'warning', 'caution' ,'danger', 'success'];
 
 const variantOptions: Record<BadgeVariants, string> = {
   status: 'Status',
