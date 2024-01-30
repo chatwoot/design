@@ -3,7 +3,11 @@ import { iconsPlugin, getIconCollections } from '@egoist/tailwindcss-icons';
 
 const tailwindConfig = {
   darkMode: 'class',
-  content: ['./src/**/*.vue'],
+  mode: 'jit',
+  purge: [
+    './src/**/*.{js,jsx,ts,tsx,vue}',
+  ],
+  content: ['./src/**/**/*.vue'],
   theme: {
     fontFamily: {
       sans: ['InterVariable, Inter, sans-serif'],

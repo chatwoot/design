@@ -6,16 +6,16 @@ import type { BadgeColors, BadgeProps, BadgeVariants } from './types';
 
 const state = reactive<BadgeProps>({
   text: 'Badge',
-  variant: 'status',
+  variant: 'solid',
   size: 'medium',
-  disabled: false
+  disabled: false,
 });
 
-const colorOptions: BadgeColors[] = ['primary', 'secondary', 'warning', 'caution' ,'danger', 'success'];
+const colorOptions: BadgeColors[] = ['blue', 'gray', 'orange', 'amber', 'red', 'green'];
 
 const variantOptions: Record<BadgeVariants, string> = {
-  status: 'Status',
-  count: 'Count'
+  solid: 'Solid',
+  rounded: 'Rounded',
 };
 </script>
 

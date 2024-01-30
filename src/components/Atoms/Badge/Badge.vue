@@ -5,8 +5,8 @@ import useColors from './useColors';
 
 const props = withDefaults(defineProps<BadgeProps>(), {
   size: 'medium',
-  variant: 'status',
-  color: 'primary',
+  variant: 'solid',
+  color: 'blue',
   disabled: false,
 });
 
@@ -21,9 +21,10 @@ const classesToApply = computed(() => {
   <span
     class="inline-flex items-center justify-center"
     :class="{
-      'px-2 py-0.5 text-xs leading-4 h-5 min-w-[1.25rem] rounded': size === 'medium',
+      'py-0.5 text-xs leading-4 h-5 min-w-[1.25rem] rounded': size === 'medium',
       'px-1 text-xs leading-4 h-4 min-w-[1rem] rounded-sm': size === 'small',
-      'rounded-xl': variant === 'count',
+      'rounded-xl px-1': variant === 'rounded',
+      'px-2': size === 'medium' && variant === 'solid',
       [classesToApply]: !disabled,
       'bg-slate-300 text-slate-800': disabled,
     }"
