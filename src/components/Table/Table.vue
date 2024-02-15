@@ -26,7 +26,7 @@ const table = useVueTable({
             v-for="header in headerGroup.headers"
             :key="header.id"
             scope="col"
-            class="p-3 ltr:text-left rtl:text-right text-sm font-medium text-slate-1100 bg-slate-100 first:rounded-tl-xl last:rounded-tr-xl"
+            class="p-3 ltr:text-left rtl:text-right text-sm font-medium text-slate-1100 bg-slate-100 ltr:first:rounded-tl-xl ltr:last:rounded-tr-xl rtl:first:rounded-tr-xl rtl:last:rounded-tl-xl"
           >
             <FlexRender :render="header.column.columnDef.header" :props="header.getContext()" />
           </th>
