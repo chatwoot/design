@@ -4,9 +4,7 @@ import { iconsPlugin, getIconCollections } from '@egoist/tailwindcss-icons';
 const tailwindConfig = {
   darkMode: 'class',
   mode: 'jit',
-  purge: [
-    './src/**/*.{js,jsx,ts,tsx,vue}',
-  ],
+  purge: ['./src/**/*.{js,jsx,ts,tsx,vue}'],
   content: ['./src/**/**/*.vue'],
   theme: {
     fontFamily: {
@@ -20,7 +18,7 @@ const tailwindConfig = {
     iconsPlugin({
       // Select the icon collections you want to use
       // You can also ignore this option to automatically discover all icon collections you have installed
-      collections: getIconCollections(['fluent']),
+      collections: getIconCollections(['fluent', 'lucide']),
     }),
   ],
 };
