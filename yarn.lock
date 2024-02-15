@@ -359,6 +359,13 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-2.0.2.tgz#d9fae00a2d5cb40f92cfe64b47ad749fbc38f917"
   integrity sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==
 
+"@iconify-json/bxl@^1.1.10":
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/@iconify-json/bxl/-/bxl-1.1.10.tgz#f7ab43028727bff36763986d556e00f315a960c0"
+  integrity sha512-/+9L0XBI7vvP8tU2NVfqr45BjUndbTEaDuU6PERn9zKH0Rtsi9GDpaba7FY8PgA91ugGIpuwUPsFLCofkYreNg==
+  dependencies:
+    "@iconify/types" "*"
+
 "@iconify-json/fluent@^1.1.46":
   version "1.1.46"
   resolved "https://registry.yarnpkg.com/@iconify-json/fluent/-/fluent-1.1.46.tgz#bd68a6ee2ef9c0d487a16b3e64f77420b0306af9"
