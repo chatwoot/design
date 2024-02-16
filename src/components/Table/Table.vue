@@ -1,10 +1,19 @@
 <script setup>
-import { ref } from 'vue';
-import { useVueTable, FlexRender, getCoreRowModel } from '@tanstack/vue-table';
+import { ref, provide } from 'vue';
+import { useVueTable, FlexRender, getCoreRowModel, getPaginationRowModel } from '@tanstack/vue-table';
+import PaginationGroup from './components/PaginationGroup.vue';
 
 const props = defineProps({
   data: Array,
   columns: Array,
+  pageSize: {
+    type: Number,
+    default: 10,
+  },
+  enablePagination: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const data = ref(props.data);
@@ -12,8 +21,18 @@ const data = ref(props.data);
 const table = useVueTable({
   data: data.value,
   columns: props.columns,
+  manualPagination: !props.enablePagination,
   getCoreRowModel: getCoreRowModel(),
+  getPaginationRowModel: getPaginationRowModel(),
+  initialState: {
+    pagination: {
+      pageSize: props.pageSize,
+    },
+  },
 });
+
+// To use the table instance in child components
+provide('table', table);
 </script>
 
 <template>
@@ -37,12 +56,21 @@ const table = useVueTable({
           <td
             v-for="cell in row.getVisibleCells()"
             :key="cell.id"
+            scope="row"
             class="p-3 text-sm text-slate-1200 border-t border-solid border-slate-400"
           >
             <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
           </td>
         </tr>
       </tbody>
+
+      <tfoot v-if="props.enablePagination">
+        <tr>
+          <td :colspan="props.columns.length" scope="row">
+            <pagination-group />
+          </td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 </template>
