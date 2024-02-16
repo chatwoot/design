@@ -1,12 +1,11 @@
 <script setup>
 import { ref } from 'vue';
+import { useVueTable, FlexRender, getCoreRowModel } from '@tanstack/vue-table';
 
 const props = defineProps({
   data: Array,
   columns: Array,
 });
-
-import { useVueTable, FlexRender, getCoreRowModel } from '@tanstack/vue-table';
 
 const data = ref(props.data);
 
@@ -47,4 +46,3 @@ const table = useVueTable({
     </table>
   </div>
 </template>
-<style></style>
