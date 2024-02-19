@@ -47,8 +47,8 @@ const handleClick = (pageIndex) => {
 </script>
 
 <template>
-  <div class="px-3 py-2 w-full flex justify-between items-center border-t border-solid border-slate-400">
-    <div class="inline-flex space-x-2">
+  <div class="px-3 py-2 w-full flex justify-between gap-1 items-center border-t border-solid border-slate-400">
+    <div class="inline-flex space-x-1 whitespace-nowrap">
       <span class="text-sm font-medium text-slate-1100"> {{ paginationRange.start }}-{{ paginationRange.end }} </span>
       <span class="text-sm font-normal text-slate-1100">of</span>
       <span class="text-sm font-medium text-slate-1100"> {{ paginationRange.total }} items</span>

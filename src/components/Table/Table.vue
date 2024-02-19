@@ -1,7 +1,14 @@
 <script setup>
 import { ref, provide } from 'vue';
-import { useVueTable, FlexRender, getCoreRowModel, getPaginationRowModel } from '@tanstack/vue-table';
+import {
+  useVueTable,
+  FlexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+} from '@tanstack/vue-table';
 import PaginationGroup from './components/PaginationGroup.vue';
+import SortIcon from './components/SortIcon.vue';
 
 const props = defineProps({
   data: Array,
@@ -14,20 +21,36 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  enableSorting: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const data = ref(props.data);
+const sorting = ref([]);
 
 const table = useVueTable({
   data: data.value,
   columns: props.columns,
   manualPagination: !props.enablePagination,
+  manualSortBy: !props.enablePagination,
+  enableSorting: props.enableSorting,
   getCoreRowModel: getCoreRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
+  getSortedRowModel: getSortedRowModel(),
   initialState: {
     pagination: {
       pageSize: props.pageSize,
     },
+  },
+  state: {
+    get sorting() {
+      return sorting.value;
+    },
+  },
+  onSortingChange: (updateSort) => {
+    sorting.value = typeof updateSort === 'function' ? updateSort(sorting.value) : updateSort;
   },
 });
 
@@ -45,8 +68,13 @@ provide('table', table);
             :key="header.id"
             scope="col"
             class="p-3 ltr:text-left rtl:text-right text-sm font-medium text-slate-1100 bg-slate-100 ltr:first:rounded-tl-xl ltr:last:rounded-tr-xl rtl:first:rounded-tr-xl rtl:last:rounded-tl-xl"
+            :class="{ 'cursor-pointer select-none': header.column.getCanSort() }"
+            @click="header.column.getToggleSortingHandler()?.($event)"
           >
-            <FlexRender :render="header.column.columnDef.header" :props="header.getContext()" />
+            <div class="flex flex-row gap-1 items-center">
+              <FlexRender :render="header.column.columnDef.header" :props="header.getContext()" />
+              <sort-icon v-if="header.column.getCanSort()" :sortDirection="header.column.getIsSorted()" />
+            </div>
           </th>
         </tr>
       </thead>

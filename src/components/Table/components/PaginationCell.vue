@@ -2,7 +2,9 @@
 import { defineProps } from 'vue';
 
 defineProps({
-  buttonText: String | Number,
+  buttonText: {
+    type: [String, Number],
+  },
   disabled: Boolean,
 });
 </script>
