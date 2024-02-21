@@ -32,7 +32,7 @@ const agentColumns = [
 <template>
   <Story title="Table/UserList" width="100%">
     <Variant title="User list">
-      <Table :data="agentData" :columns="agentColumns" enablePagination enableSorting />
+      <Table :data="agentData" :columns="agentColumns" :pageSize="3" enablePagination enableSorting />
     </Variant>
   </Story>
 </template>

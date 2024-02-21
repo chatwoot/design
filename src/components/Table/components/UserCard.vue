@@ -11,7 +11,7 @@ defineProps({
       v-if="thumbnail"
       class="w-10 h-10 rounded-full border border-solid border-slate-400"
       :src="thumbnail"
-      alt="Profile picture"
+      :alt="`${name} profile picture`"
     />
     <div v-else class="w-10 h-10 flex items-center justify-center rounded-full border border-solid border-slate-400">
       <span class="i-lucide-user text-slate-1100 w-5 h-5"></span>
