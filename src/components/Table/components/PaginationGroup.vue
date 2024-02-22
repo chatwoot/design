@@ -1,6 +1,7 @@
 <script setup>
 import { inject, computed } from 'vue';
 import PaginationCell from './PaginationCell.vue';
+import PaginationArrowCell from './PaginationArrowCell.vue';
 
 const table = inject('table');
 
@@ -54,20 +55,16 @@ const handleClick = (pageIndex) => {
       <span class="text-sm font-medium text-slate-1100"> {{ paginationRange.total }} items</span>
     </div>
     <div class="flex flex-row gap-2 items-center justify-center">
-      <button
-        class="w-7 h-7 p-1 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
-        @click="table.setPageIndex(0)"
-        :disabled="table.getState().pagination.pageIndex === 0"
-      >
-        <span class="i-material-symbols-keyboard-double-arrow-left text-slate-1100 w-5 h-5" />
-      </button>
-      <button
-        class="w-7 h-7 p-1 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
-        @click="table.previousPage()"
-        :disabled="!table.getCanPreviousPage()"
-      >
-        <span class="i-material-symbols-keyboard-arrow-left text-slate-1100 w-5 h-5" />
-      </button>
+      <pagination-arrow-cell :disabled="table.getState().pagination.pageIndex === 0" @change="table.setPageIndex(0)">
+        <template #icon>
+          <span class="i-material-symbols-keyboard-double-arrow-left text-slate-1100 w-5 h-5" />
+        </template>
+      </pagination-arrow-cell>
+      <pagination-arrow-cell :disabled="!table.getCanPreviousPage()" @change="table.previousPage()">
+        <template #icon>
+          <span class="i-material-symbols-keyboard-arrow-left text-slate-1100 w-5 h-5" />
+        </template>
+      </pagination-arrow-cell>
 
       <div class="flex flex-row gap-2 items-center justify-center">
         <pagination-cell
@@ -79,20 +76,19 @@ const handleClick = (pageIndex) => {
         />
       </div>
 
-      <button
-        class="w-7 h-7 p-1 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
-        @click="table.nextPage()"
-        :disabled="!table.getCanNextPage()"
-      >
-        <span class="i-material-symbols-keyboard-arrow-right text-slate-1100 w-5 h-5" />
-      </button>
-      <button
-        class="w-7 h-7 p-1 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
-        @click="table.setPageIndex(table.getPageCount() - 1)"
+      <pagination-arrow-cell :disabled="!table.getCanNextPage()" @change="table.nextPage()">
+        <template #icon>
+          <span class="i-material-symbols-keyboard-arrow-right text-slate-1100 w-5 h-5" />
+        </template>
+      </pagination-arrow-cell>
+      <pagination-arrow-cell
         :disabled="table.getState().pagination.pageIndex === table.getPageCount() - 1"
+        @change="table.setPageIndex(table.getPageCount() - 1)"
       >
-        <span class="i-material-symbols-keyboard-double-arrow-right text-slate-1100 w-5 h-5" />
-      </button>
+        <template #icon>
+          <span class="i-material-symbols-keyboard-double-arrow-right text-slate-1100 w-5 h-5" />
+        </template>
+      </pagination-arrow-cell>
     </div>
   </div>
 </template>
