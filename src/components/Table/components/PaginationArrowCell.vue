@@ -1,20 +1,9 @@
 <script setup>
 import { defineProps } from 'vue';
 
-const props = defineProps({
-  position: {
-    type: [String],
-    required: true,
-    validator: (value) => ['left', 'right'].includes(value),
-  },
-  type: {
-    type: [String],
-    validator: (value) => ['double', ''].includes(value),
-  },
+defineProps({
   disabled: Boolean,
 });
-
-const buttonType = props.type === 'double' ? 'double-' : '';
 </script>
 
 <template>
@@ -23,6 +12,6 @@ const buttonType = props.type === 'double' ? 'double-' : '';
     :disabled="disabled"
     @click="$emit('change')"
   >
-    <span class="text-slate-1100 w-5 h-5" :class="`i-material-symbols-keyboard-${buttonType}arrow-${position}`" />
+    <slot name="icon" />
   </button>
 </template>

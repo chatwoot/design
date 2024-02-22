@@ -39,29 +39,31 @@ const paginationRange = computed(() => {
       <span class="text-sm font-medium text-slate-1100"> {{ paginationRange.total }} items</span>
     </div>
     <div class="flex flex-row gap-2 items-center justify-center">
-      <pagination-arrow-cell
-        position="left"
-        type="double"
-        :disabled="props.currentPage === 1"
-        @click="$emit('goToFirstPage')"
-      />
-      <pagination-arrow-cell position="left" :disabled="props.currentPage === 1" @click="$emit('goToPrevPage')" />
+      <pagination-arrow-cell :disabled="props.currentPage === 1" @click="$emit('goToFirstPage')">
+        <template #icon>
+          <span class="i-material-symbols-keyboard-double-arrow-left text-slate-1100 w-5 h-5" />
+        </template>
+      </pagination-arrow-cell>
+      <pagination-arrow-cell :disabled="props.currentPage === 1" @click="$emit('goToPrevPage')">
+        <template #icon>
+          <span class="i-material-symbols-keyboard-arrow-left text-slate-1100 w-5 h-5" />
+        </template>
+      </pagination-arrow-cell>
 
       <div class="flex flex-row gap-2 items-center justify-center">
         <pagination-cell :buttonText="currentPage" />
       </div>
 
-      <pagination-arrow-cell
-        position="right"
-        :disabled="props.currentPage === props.totalPages"
-        @click="$emit('goToNextPage')"
-      />
-      <pagination-arrow-cell
-        position="right"
-        type="double"
-        :disabled="props.currentPage === props.totalPages"
-        @click="$emit('goToLastPage')"
-      />
+      <pagination-arrow-cell :disabled="props.currentPage === props.totalPages" @click="$emit('goToNextPage')">
+        <template #icon>
+          <span class="i-material-symbols-keyboard-arrow-right text-slate-1100 w-5 h-5" />
+        </template>
+      </pagination-arrow-cell>
+      <pagination-arrow-cell :disabled="props.currentPage === props.totalPages" @click="$emit('goToLastPage')">
+        <template #icon>
+          <span class="i-material-symbols-keyboard-double-arrow-right text-slate-1100 w-5 h-5" />
+        </template>
+      </pagination-arrow-cell>
     </div>
   </div>
 </template>

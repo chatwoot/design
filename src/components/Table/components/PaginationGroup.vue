@@ -55,13 +55,16 @@ const handleClick = (pageIndex) => {
       <span class="text-sm font-medium text-slate-1100"> {{ paginationRange.total }} items</span>
     </div>
     <div class="flex flex-row gap-2 items-center justify-center">
-      <pagination-arrow-cell
-        position="left"
-        type="double"
-        :disabled="table.getState().pagination.pageIndex === 0"
-        @change="table.setPageIndex(0)"
-      />
-      <pagination-arrow-cell position="left" :disabled="!table.getCanPreviousPage()" @change="table.previousPage()" />
+      <pagination-arrow-cell :disabled="table.getState().pagination.pageIndex === 0" @change="table.setPageIndex(0)">
+        <template #icon>
+          <span class="i-material-symbols-keyboard-double-arrow-left text-slate-1100 w-5 h-5" />
+        </template>
+      </pagination-arrow-cell>
+      <pagination-arrow-cell :disabled="!table.getCanPreviousPage()" @change="table.previousPage()">
+        <template #icon>
+          <span class="i-material-symbols-keyboard-arrow-left text-slate-1100 w-5 h-5" />
+        </template>
+      </pagination-arrow-cell>
 
       <div class="flex flex-row gap-2 items-center justify-center">
         <pagination-cell
@@ -73,13 +76,19 @@ const handleClick = (pageIndex) => {
         />
       </div>
 
-      <pagination-arrow-cell position="right" :disabled="!table.getCanNextPage()" @change="table.nextPage()" />
+      <pagination-arrow-cell :disabled="!table.getCanNextPage()" @change="table.nextPage()">
+        <template #icon>
+          <span class="i-material-symbols-keyboard-arrow-right text-slate-1100 w-5 h-5" />
+        </template>
+      </pagination-arrow-cell>
       <pagination-arrow-cell
-        position="right"
-        type="double"
         :disabled="table.getState().pagination.pageIndex === table.getPageCount() - 1"
         @change="table.setPageIndex(table.getPageCount() - 1)"
-      />
+      >
+        <template #icon>
+          <span class="i-material-symbols-keyboard-double-arrow-right text-slate-1100 w-5 h-5" />
+        </template>
+      </pagination-arrow-cell>
     </div>
   </div>
 </template>
