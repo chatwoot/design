@@ -10,6 +10,7 @@ const agentColumns = [
     accessorKey: 'name',
     cell: ({ row }) =>
       h(UserCard, {
+        id: row.original.id,
         name: row.original.name,
         email: row.original.email,
         thumbnail: row.original.thumbnail,
@@ -32,7 +33,7 @@ const agentColumns = [
 <template>
   <Story title="Table/UserList" width="100%">
     <Variant title="User list">
-      <Table :data="agentData" :columns="agentColumns" :pageSize="3" enablePagination enableSorting />
+      <Table :data="agentData" :columns="agentColumns" :pageSize="3" enableSorting showTableFooter />
     </Variant>
   </Story>
 </template>

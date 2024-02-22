@@ -1,5 +1,5 @@
 <script setup>
-import { ref, provide } from 'vue';
+import { ref, provide, computed, defineProps } from 'vue';
 import {
   useVueTable,
   FlexRender,
@@ -8,40 +8,40 @@ import {
   getSortedRowModel,
 } from '@tanstack/vue-table';
 import PaginationGroup from './components/PaginationGroup.vue';
+import manualPaginationGroup from './components/ManualPaginationGroup.vue';
 import SortIcon from './components/SortIcon.vue';
 
 const props = defineProps({
   data: Array,
   columns: Array,
-  pageSize: {
-    type: Number,
-    default: 10,
-  },
-  enablePagination: {
-    type: Boolean,
-    default: false,
-  },
-  enableSorting: {
-    type: Boolean,
-    default: false,
-  },
+  currentPage: Number,
+  totalPages: Number,
+  totalCount: Number,
+  pageSize: Number,
+  showTableFooter: Boolean,
+  enableManualPagination: Boolean,
+  enableSorting: Boolean,
 });
 
-const data = ref(props.data);
 const sorting = ref([]);
 
-const table = useVueTable({
-  data: data.value,
+const pageSize = computed(() => props.pageSize || 10);
+
+const tableOptions = computed(() => ({
+  get data() {
+    return props.data;
+  },
   columns: props.columns,
-  manualPagination: !props.enablePagination,
-  manualSortBy: !props.enablePagination,
+  manualPagination: props.enableManualPagination,
+  manualSortBy: !props.enableSorting,
   enableSorting: props.enableSorting,
   getCoreRowModel: getCoreRowModel(),
+  // If manual pagination is enabled, the table will use the manual pagination row model.
   getPaginationRowModel: getPaginationRowModel(),
   getSortedRowModel: getSortedRowModel(),
   initialState: {
     pagination: {
-      pageSize: props.pageSize,
+      pageSize: pageSize.value,
     },
   },
   state: {
@@ -52,7 +52,9 @@ const table = useVueTable({
   onSortingChange: (updateSort) => {
     sorting.value = typeof updateSort === 'function' ? updateSort(sorting.value) : updateSort;
   },
-});
+}));
+
+const table = useVueTable(tableOptions.value);
 
 // To use the table instance in child components
 provide('table', table);
@@ -92,10 +94,21 @@ provide('table', table);
         </tr>
       </tbody>
 
-      <tfoot v-if="props.enablePagination">
+      <tfoot v-if="props.showTableFooter">
         <tr>
           <td :colspan="props.columns.length" scope="row">
-            <pagination-group />
+            <pagination-group v-if="!props.enableManualPagination" />
+            <manual-pagination-group
+              v-else
+              :currentPage="props.currentPage"
+              :totalPages="props.totalPages"
+              :totalCount="props.totalCount"
+              :pageSize="props.pageSize"
+              @goToFirstPage="$emit('goToFirstPage')"
+              @goToPrevPage="$emit('goToPrevPage')"
+              @goToNextPage="$emit('goToNextPage')"
+              @goToLastPage="$emit('goToLastPage')"
+            />
           </td>
         </tr>
       </tfoot>

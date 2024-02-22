@@ -1,12 +1,13 @@
 <script setup>
 defineProps({
+  id: Number,
   name: String,
   email: String,
   thumbnail: String,
 });
 </script>
 <template>
-  <div class="flex items-center gap-3 w-full">
+  <div :key="id" class="flex items-center gap-3 w-full">
     <img
       v-if="thumbnail"
       class="w-10 h-10 rounded-full border border-solid border-slate-400"
